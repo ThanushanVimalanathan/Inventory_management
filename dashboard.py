@@ -71,7 +71,8 @@ empoloyee_button = Button(
     compound=LEFT,
     text='Employees',
     font=('times new roman',20,'bold'),
-    anchor='w'
+    anchor='w',
+    padx=10
 )
 empoloyee_button.pack(fill=X)
 
@@ -87,7 +88,9 @@ supplier_Button = Button(
     compound=LEFT,
     text='Supplier',
     font=('times new roman',20,'bold'),
-    anchor='w'
+    anchor='w',
+    padx=10
+    
 )
 supplier_Button.pack(fill=X)
 
@@ -104,7 +107,9 @@ Cat_button = Button(
     compound=LEFT,
     text='Category',
     font=('times new roman',20,'bold'),
-    anchor='w'
+    anchor='w',
+    padx=10
+    
 )
 Cat_button.pack(fill=X)
 
@@ -120,7 +125,9 @@ product_button = Button(
     compound=LEFT,
     text='Product',
     font=('times new roman',20,'bold'),
-    anchor='w'
+    anchor='w',
+    padx=10
+    
 )
 product_button.pack(fill=X)
 
@@ -136,7 +143,9 @@ sales_button = Button(
     compound=LEFT,
     text='Sales',
     font=('times new roman',20,'bold'),
-    anchor='w'
+    anchor='w',
+    padx=10
+    
 )
 sales_button.pack(fill=X)
 
@@ -152,7 +161,9 @@ exit_button = Button(
     compound=LEFT,
     text='Exit',
     font=('times new roman',20,'bold'),
-    anchor='w'
+    anchor='w',
+    padx=10
+    
 )
 exit_button.pack(fill=X)
 
