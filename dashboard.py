@@ -38,4 +38,125 @@ subtitleLabel = Label(
 subtitleLabel.place(x=0,y=70,relwidth=1)
 
 
+#Create Sidebar
+leftFrame = Frame(window)
+leftFrame.place(x=0,y=102,width=200,height=500)
+
+
+LogoImg = Image.open('assets/checklist.png')
+LogoImg = LogoImg.resize((150, 150), Image.LANCZOS)
+Logo = ImageTk.PhotoImage(LogoImg)
+
+ImageLabel = Label(leftFrame,image=Logo)
+ImageLabel.pack()
+
+
+#Create Menu Label
+menuLabel = Label(
+    leftFrame, 
+    text='Menu',
+    font=('time new roman', 20),
+    bg='#009688'
+)
+
+#Employee Button and Icon
+EmpImg = Image.open('assets/employee.png')
+EmpImg = EmpImg.resize((40, 40), Image.LANCZOS)
+Emp = ImageTk.PhotoImage(EmpImg)
+
+menuLabel.pack(fill=X)
+empoloyee_button = Button(
+    leftFrame,
+    image=Emp,
+    compound=LEFT,
+    text='Employees',
+    font=('times new roman',20,'bold'),
+    anchor='w'
+)
+empoloyee_button.pack(fill=X)
+
+#Create Supplier button
+SupImg = Image.open('assets/supplier.png')
+SupImg = SupImg.resize((40, 40), Image.LANCZOS)
+Sup = ImageTk.PhotoImage(SupImg)
+
+menuLabel.pack(fill=X)
+supplier_Button = Button(
+    leftFrame,
+    image=Sup,
+    compound=LEFT,
+    text='Supplier',
+    font=('times new roman',20,'bold'),
+    anchor='w'
+)
+supplier_Button.pack(fill=X)
+
+
+#Create Category
+CatImg = Image.open('assets/category.png')
+CatImg = CatImg.resize((40, 40), Image.LANCZOS)
+Cat = ImageTk.PhotoImage(CatImg)
+
+menuLabel.pack(fill=X)
+Cat_button = Button(
+    leftFrame,
+    image=Cat,
+    compound=LEFT,
+    text='Category',
+    font=('times new roman',20,'bold'),
+    anchor='w'
+)
+Cat_button.pack(fill=X)
+
+#Product
+ProImg = Image.open('assets/box.png')
+ProImg = ProImg.resize((40, 40), Image.LANCZOS)
+Pro = ImageTk.PhotoImage(ProImg)
+
+menuLabel.pack(fill=X)
+product_button = Button(
+    leftFrame,
+    image=Pro,
+    compound=LEFT,
+    text='Product',
+    font=('times new roman',20,'bold'),
+    anchor='w'
+)
+product_button.pack(fill=X)
+
+#Sales
+SalImg = Image.open('assets/sales.png')
+SalImg = SalImg.resize((40, 40), Image.LANCZOS)
+Sal = ImageTk.PhotoImage(SalImg)
+
+menuLabel.pack(fill=X)
+sales_button = Button(
+    leftFrame,
+    image=Sal,
+    compound=LEFT,
+    text='Sales',
+    font=('times new roman',20,'bold'),
+    anchor='w'
+)
+sales_button.pack(fill=X)
+
+#Exit
+ExtImg = Image.open('assets/logout.png')
+ExtImg = ExtImg.resize((40, 40), Image.LANCZOS)
+Ext = ImageTk.PhotoImage(ExtImg)
+
+menuLabel.pack(fill=X)
+exit_button = Button(
+    leftFrame,
+    image=Ext,
+    compound=LEFT,
+    text='Exit',
+    font=('times new roman',20,'bold'),
+    anchor='w'
+)
+exit_button.pack(fill=X)
+
+
+
+
 window.mainloop()
