@@ -169,5 +169,56 @@ exit_button.pack(fill=X)
 
 
 
+#-----------------------------------------employee frame card---------------------------------------------------------------
+emp_frame = Frame(
+    window,
+    bg='#2C3E50',
+    bd=3,
+    relief=RIDGE
+)
+emp_frame.place(x=400, y=125, height=150, width=250)
+
+total_emp_icon = Image.open('assets/businessman.png')
+total_emp_icon = total_emp_icon.resize((50, 50), Image.LANCZOS)
+total_emp = ImageTk.PhotoImage(total_emp_icon)
+
+
+total_emp_icon_label = Label(emp_frame, image=total_emp,bg='#2C3E50')
+total_emp_icon_label.pack()
+
+total_emp_label = Label(emp_frame,text='Total Employee',bg='#2C3E50',fg='white',font=('times new roman',25,'bold'))
+total_emp_label.pack()
+
+total_emp_count_label = Label(emp_frame,text='0',bg='#2C3E50',fg='white',font=('times new roman',30,'bold'))
+total_emp_count_label.pack()
+
+#---------------------------------------------------------------------------------------------------------------------#
+
+#-----------------------------------------Supplier frame card---------------------------------------------------------------
+
+sup_frame = Frame(
+    window,
+    bg="#241580",
+    bd=3,
+    relief=RIDGE
+)
+sup_frame.place(x=800, y=125, height=150, width=250)
+
+total_sup_icon = Image.open('assets/supply.png')
+total_sup_icon = total_sup_icon.resize((50, 50), Image.LANCZOS)
+total_sup = ImageTk.PhotoImage(total_sup_icon)
+
+
+total_sup_icon_label = Label(sup_frame, image=total_sup,bg='#241580')
+total_sup_icon_label.pack()
+
+total_sup_label = Label(sup_frame,text='Supplier',bg='#241580',fg='white',font=('times new roman',25,'bold'))
+total_sup_label.pack()
+
+total_sup_count_label = Label(sup_frame,text='0',bg='#241580',fg='white',font=('times new roman',30,'bold'))
+total_sup_count_label.pack()
+
+#---------------------------------------------------------------------------------------------------------------------#
+
 
 window.mainloop()
