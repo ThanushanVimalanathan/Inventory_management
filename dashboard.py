@@ -18,7 +18,7 @@ titleLabel = Label(
     compound=LEFT,
     text='  Inventory Management System',
     font=('times new roman', 40, 'bold'),
-    bg='#010c48',
+    bg="#b74009",
     fg='white',
     anchor='w',
     padx=20
@@ -31,7 +31,7 @@ logoutButton.place(x=1100,y=10)#place logout Button
 #subLabel
 subtitleLabel = Label(
     window,
-    text='Wlcom Admin\t\t Date: 08-07-2025\t\t Time: 12:40:17 pm',
+    text='Welcome Admin\t\t Date: 08-07-2025\t\t Time: 12:40:17 pm',
     font=('times new roman',15),
     bg='#4d636d'
 )
@@ -40,7 +40,7 @@ subtitleLabel.place(x=0,y=70,relwidth=1)
 
 #Create Sidebar
 leftFrame = Frame(window)
-leftFrame.place(x=0,y=102,width=200,height=500)
+leftFrame.place(x=10,y=122,width=200,height=500)
 
 
 LogoImg = Image.open('assets/checklist.png')
@@ -212,13 +212,91 @@ total_sup = ImageTk.PhotoImage(total_sup_icon)
 total_sup_icon_label = Label(sup_frame, image=total_sup,bg='#241580')
 total_sup_icon_label.pack()
 
-total_sup_label = Label(sup_frame,text='Supplier',bg='#241580',fg='white',font=('times new roman',25,'bold'))
+total_sup_label = Label(sup_frame,text='Total Supplier',bg='#241580',fg='white',font=('times new roman',25,'bold'))
 total_sup_label.pack()
 
-total_sup_count_label = Label(sup_frame,text='0',bg='#241580',fg='white',font=('times new roman',30,'bold'))
+total_sup_count_label = Label(sup_frame,text='12',bg='#241580',fg='white',font=('times new roman',30,'bold'))
 total_sup_count_label.pack()
 
 #---------------------------------------------------------------------------------------------------------------------#
 
+#-----------------------------------------Categeory frame card---------------------------------------------------------------
+
+cat_frame = Frame(
+    window,
+    bg="#098074",
+    bd=3,
+    relief=RIDGE
+)
+cat_frame.place(x=400, y=310, height=150, width=250)
+
+total_cat_icon = Image.open('assets/widget.png')
+total_cat_icon = total_cat_icon.resize((50, 50), Image.LANCZOS)
+total_cat = ImageTk.PhotoImage(total_cat_icon)
+
+
+total_cat_icon_label = Label(cat_frame, image=total_cat,bg='#098074')
+total_cat_icon_label.pack()
+
+total_cat_label = Label(cat_frame,text='Total Categeory',bg='#098074',fg='white',font=('times new roman',25,'bold'))
+total_cat_label.pack()
+
+total_cat_count_label = Label(cat_frame,text='12',bg='#098074',fg='white',font=('times new roman',30,'bold'))
+total_cat_count_label.pack()
+
+#---------------------------------------------------------------------------------------------------------------------#
+
+#-----------------------------------------Supplier frame card---------------------------------------------------------------
+
+pro_frame = Frame(
+    window,
+    bg="#3C3A48",
+    bd=3,
+    relief=RIDGE
+)
+pro_frame.place(x=800, y=310, height=150, width=250)
+
+total_pro_icon = Image.open('assets/gross.png')
+total_pro_icon = total_pro_icon.resize((50, 50), Image.LANCZOS)
+total_pro = ImageTk.PhotoImage(total_pro_icon)
+
+
+total_pro_icon_label = Label(pro_frame, image=total_pro,bg="#3C3A48")
+total_pro_icon_label.pack()
+
+total_pro_label = Label(pro_frame,text='Total Product',bg='#3C3A48',fg='white',font=('times new roman',25,'bold'))
+total_pro_label.pack()
+
+total_pro_count_label = Label(pro_frame,text='12',bg='#3C3A48',fg='white',font=('times new roman',30,'bold'))
+total_pro_count_label.pack()
+
+#---------------------------------------------------------------------------------------------------------------------#
+
+
+#-----------------------------------------Sales frame card---------------------------------------------------------------
+
+sal_frame = Frame(
+    window,
+    bg="#570F38",
+    bd=3,
+    relief=RIDGE
+)
+sal_frame.place(x=600, y=495, height=150, width=250)
+
+total_sal_icon = Image.open('assets/trend.png')
+total_sal_icon = total_sal_icon.resize((50, 50), Image.LANCZOS)
+total_sal = ImageTk.PhotoImage(total_sal_icon)
+
+
+total_sal_icon_label = Label(sal_frame, image=total_sal,bg='#570F38')
+total_sal_icon_label.pack()
+
+total_sal_label = Label(sal_frame,text='Total Categeory',bg='#570F38',fg='white',font=('times new roman',25,'bold'))
+total_sal_label.pack()
+
+total_sal_count_label = Label(sal_frame,text='12',bg='#570F38',fg='white',font=('times new roman',30,'bold'))
+total_sal_count_label.pack()
+
+#---------------------------------------------------------------------------------------------------------------------#
 
 window.mainloop()
