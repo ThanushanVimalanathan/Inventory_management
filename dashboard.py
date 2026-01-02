@@ -93,41 +93,71 @@ def employee_form():
    
    #create id Label for data entry
    empId_label = Label(detail_frame,text='EmpId:',font=('times new roman',12))
-   empId_label.grid(row=0,column=0)
+   empId_label.grid(row=0,column=0,padx=20,pady=10,sticky='w')
    empId_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
    empId_entry.grid(row=0,column=1,padx=20,pady=10)
    
    #create name label for data entName
    empName_label = Label(detail_frame,text='Name:',font=('times new roman',12))
-   empName_label.grid(row=0,column=2)
+   empName_label.grid(row=0,column=2,padx=20,pady=10,sticky='w')
    empName_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
    empName_entry.grid(row=0,column=3,padx=20,pady=10)
    
-   #create name label for data entEmail
+   #create name label for data Email
    empEmail_label = Label(detail_frame,text='Email:',font=('times new roman',12))
-   empEmail_label.grid(row=0,column=6)
+   empEmail_label.grid(row=0,column=4,padx=20,pady=10,sticky='w')
    empEmail_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
-   empEmail_entry.grid(row=0,column=7,padx=20,pady=10)
+   empEmail_entry.grid(row=0,column=5,padx=20,pady=10)
    
    #create name label for data Gender
    gender_label = Label(detail_frame,text='Gender',font=('times new roman',12))
-   gender_label.grid(row=1,column=0,padx=20,pady=10)
+   gender_label.grid(row=1,column=0,padx=20,pady=10,sticky='w')
    gender_combobox = ttk.Combobox(detail_frame,values=('Male','Female'),font=('times new roman',12),width=18,state='readonly')
    gender_combobox.set('Select Gender')
    gender_combobox.grid(row=1,column=1)
    
    #Dob Label
-   gender_label = Label(detail_frame,text='Date Of Birth',font=('times new roman',12))
-   gender_label.grid(row=1,column=2,padx=20,pady=10)
-   
+   Dob_label = Label(detail_frame,text='Date Of Birth',font=('times new roman',12))
+   Dob_label.grid(row=1,column=2,padx=20,pady=10,sticky='w')
    Dob_date_entry = DateEntry(detail_frame,width=18, font=('times new roman',12),state='readonly',date_pattern='dd/mm/yyyy')
    Dob_date_entry.grid(row=1,column=3) 
    
    #Contact Label
    contact_label = Label(detail_frame,text='Contact:',font=('times new roman',12))
-   contact_label.grid(row=1,column=4,padx=20,pady=10)
+   contact_label.grid(row=1,column=4,padx=20,pady=10,sticky='w')
    contact_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
-   contact_entry.grid(row=1,column=1,padx=20,pady=10)
+   contact_entry.grid(row=1,column=5,padx=20,pady=10)
+   
+   #Employee Type
+   Emp_label = Label(detail_frame,text='Employee Type',font=('times new roman',12))
+   Emp_label.grid(row=2,column=0,padx=20,pady=10,sticky='w')
+   Emp_combobox = ttk.Combobox(detail_frame,values=('Full Time','Part Time','Casual','Contract','Intern'),font=('times new roman',12),width=18,state='readonly')
+   Emp_combobox.set('Select Type')
+   Emp_combobox.grid(row=2,column=1)
+   
+   #Education
+   Education_label = Label(detail_frame,text='Education',font=('times new roman',12))
+   Education_label.grid(row=2,column=2,padx=20,pady=10,sticky='w')
+   
+   education_option = ['B.Tech','M.Tech','B.Com','M.Com','Bsc','Msc','BBA','MBA','LLB','LLM','B.Arch','M.Arch']
+   
+   Education_combobox = ttk.Combobox(detail_frame, values=education_option,font=('times new roman',12),width=18,state='readonly')
+   Education_combobox.set('Select Education')
+   Education_combobox.grid(row=2,column=3)
+   
+   
+   #Work Shift
+   WorkShift_label = Label(detail_frame,text='Employee Type',font=('times new roman',12))
+   WorkShift_label.grid(row=2,column=4,padx=20,pady=10,sticky='w')
+   WorkShift_combobox = ttk.Combobox(detail_frame,values=('Morning','Night'),font=('times new roman',12),width=18,state='readonly')
+   WorkShift_combobox.set('Select Shift')
+   WorkShift_combobox.grid(row=2,column=5)
+   
+   #Address Label
+   Address_label = Label(detail_frame,text='Address:',font=('times new roman',12))
+   Address_label.grid(row=3,column=0,padx=20,pady=10,sticky='w')
+   Address_text = Text(detail_frame,width=20,height=3,font=('times new roman',12),bg='light yellow')
+   Address_text.grid(row=3,column=1)
    
    
    
