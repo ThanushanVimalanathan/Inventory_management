@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
+from tkcalendar import DateEntry
 
 
 #----------------------------------Functionality Part--------------------------------------------------#
@@ -86,6 +87,49 @@ def employee_form():
    employee_treeview.column('doj',width=100)
    employee_treeview.column('salary',width=140)
    employee_treeview.column('usertype',width=120)
+   
+   detail_frame = Frame(emp_frame)
+   detail_frame.place(x=0,y=300)
+   
+   #create id Label for data entry
+   empId_label = Label(detail_frame,text='EmpId:',font=('times new roman',12))
+   empId_label.grid(row=0,column=0)
+   empId_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
+   empId_entry.grid(row=0,column=1,padx=20,pady=10)
+   
+   #create name label for data entName
+   empName_label = Label(detail_frame,text='Name:',font=('times new roman',12))
+   empName_label.grid(row=0,column=2)
+   empName_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
+   empName_entry.grid(row=0,column=3,padx=20,pady=10)
+   
+   #create name label for data entEmail
+   empEmail_label = Label(detail_frame,text='Email:',font=('times new roman',12))
+   empEmail_label.grid(row=0,column=6)
+   empEmail_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
+   empEmail_entry.grid(row=0,column=7,padx=20,pady=10)
+   
+   #create name label for data Gender
+   gender_label = Label(detail_frame,text='Gender',font=('times new roman',12))
+   gender_label.grid(row=1,column=0,padx=20,pady=10)
+   gender_combobox = ttk.Combobox(detail_frame,values=('Male','Female'),font=('times new roman',12),width=18,state='readonly')
+   gender_combobox.set('Select Gender')
+   gender_combobox.grid(row=1,column=1)
+   
+   #Dob Label
+   gender_label = Label(detail_frame,text='Date Of Birth',font=('times new roman',12))
+   gender_label.grid(row=1,column=2,padx=20,pady=10)
+   
+   Dob_date_entry = DateEntry(detail_frame,width=18, font=('times new roman',12),state='readonly',date_pattern='dd/mm/yyyy')
+   Dob_date_entry.grid(row=1,column=3) 
+   
+   #Contact Label
+   contact_label = Label(detail_frame,text='Contact:',font=('times new roman',12))
+   contact_label.grid(row=1,column=4,padx=20,pady=10)
+   contact_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
+   contact_entry.grid(row=1,column=1,padx=20,pady=10)
+   
+   
    
 
 
