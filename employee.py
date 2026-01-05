@@ -13,15 +13,33 @@ def connect_database():
        cursor = connection.cursor()
     except:
         messagebox.showerror('Error','Database connectivity error')
-        return 
+        return None,None
     
     
     cursor.execute('CREATE DATABASE IF NOT EXISTS inventory_system')
-    cursor.execute('USE inventory_systemn')
+    cursor.execute('USE inventory_system')
     cursor.execute('CREATE TABLE IF NOT EXISTS employee_data (empid INT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), gender VARCHAR(50),'
-                   'dob VARCHAR(30), contact VARCHAR(30), employment_type VARCHAR(50), work_shift VARCHAR(50), address VARCHAR(100), doj VARCHAR(30),'
+                   'dob VARCHAR(30), contact VARCHAR(30), employment_type VARCHAR(50),education varchar(50), work_shift VARCHAR(50), address VARCHAR(100), doj VARCHAR(30),'
                    'salary VARCHAR(50), usertype VARCHAR(50), password VARCHAR(50))')
     
+    return cursor,connection
+    
+connect_database()  
+#---------------------------------------------------------------------------------------------------------#
+
+#-------------------------------------Add Record----------------------------------------------------------# 
+   
+def add_employee( empid,name,email,gender,dob,contact,education,employment_type,work_shift,address,doj,salary,usertype,password):
+    if (empid == '' or name == '' or email == '' or gender == 'Select Gender' or contact == '' or employment_type == 'Select Type' or education == 'Select Education' or work_shift == 'Select Shift' or address == '\n' or salary == '' or usertype == 'Select User Type' or password == '' ):
+         messagebox.showerror('Error','All fields are required')
+         
+    else:
+        cursor,connection = connect_database() 
+        if not cursor or not connection:
+            return
+        cursor.execute('INSERT INTO employee_data VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',(empid,name,email,gender,dob,contact,employment_type,work_shift,address,doj,salary,usertype,password,education))
+        connection.commit()
+        messagebox.showinfo('Success','Data is Inserted successfully')
     
 #---------------------------------------------------------------------------------------------------------#
    
@@ -72,7 +90,7 @@ def employee_form(window):
    
    horizontal_scrollbar = Scrollbar(topFrame,orient=HORIZONTAL)
    vertical_scrollbar = Scrollbar(topFrame,orient=VERTICAL)
-   employee_treeview = ttk.Treeview(topFrame,columns=('empid','name','email','gender','dob','contact','employement_type','education','work_shift','address','doj','salary','usertype'),show='headings',yscrollcommand=vertical_scrollbar.set,xscrollcommand=horizontal_scrollbar.set)
+   employee_treeview = ttk.Treeview(topFrame,columns=('empid','name','email','gender','dob','contact','employement_type','education','work_shift','address','doj','salary','usertype','password'),show='headings',yscrollcommand=vertical_scrollbar.set,xscrollcommand=horizontal_scrollbar.set)
    
    horizontal_scrollbar.pack(side=BOTTOM,fill=X)
    vertical_scrollbar.pack(side=RIGHT,fill=Y,pady=(10,0))
@@ -94,6 +112,8 @@ def employee_form(window):
    employee_treeview.heading('doj',text = 'Date of Join')
    employee_treeview.heading('salary',text = 'Salary')
    employee_treeview.heading('usertype',text = 'user Type')
+   employee_treeview.heading('password',text = 'Password')
+   
    
    employee_treeview.column('empid',width=60)
    employee_treeview.column('name',width=140)
@@ -108,27 +128,29 @@ def employee_form(window):
    employee_treeview.column('doj',width=100)
    employee_treeview.column('salary',width=140)
    employee_treeview.column('usertype',width=120)
+   employee_treeview.column('password',width=120)
+   
    
    detail_frame = Frame(emp_frame,bg='light gray')
    detail_frame.place(x=20,y=300)
    
    #create id Label for data entry
-   empId_label = Label(detail_frame,text='EmpId :',font=('times new roman',12))
-   empId_label.grid(row=0,column=0,padx=20,pady=10,sticky='w')
-   empId_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
-   empId_entry.grid(row=0,column=1,padx=20,pady=10)
+   empid_label = Label(detail_frame,text='EmpId :',font=('times new roman',12))
+   empid_label.grid(row=0,column=0,padx=20,pady=10,sticky='w')
+   empid_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
+   empid_entry.grid(row=0,column=1,padx=20,pady=10)
    
    #create name label for data entName
-   empName_label = Label(detail_frame,text='Name :',font=('times new roman',12))
-   empName_label.grid(row=0,column=2,padx=20,pady=10,sticky='w')
-   empName_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
-   empName_entry.grid(row=0,column=3,padx=20,pady=10)
+   name_label = Label(detail_frame,text='Name :',font=('times new roman',12))
+   name_label.grid(row=0,column=2,padx=20,pady=10,sticky='w')
+   name_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
+   name_entry.grid(row=0,column=3,padx=20,pady=10)
    
    #create name label for data Email
-   empEmail_label = Label(detail_frame,text='Email :',font=('times new roman',12))
-   empEmail_label.grid(row=0,column=4,padx=20,pady=10,sticky='w')
-   empEmail_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
-   empEmail_entry.grid(row=0,column=5,padx=20,pady=10)
+   email_label = Label(detail_frame,text='Email :',font=('times new roman',12))
+   email_label.grid(row=0,column=4,padx=20,pady=10,sticky='w')
+   email_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
+   email_entry.grid(row=0,column=5,padx=20,pady=10)
    
    #create name label for data Gender
    gender_label = Label(detail_frame,text='Gender :',font=('times new roman',12))
@@ -138,10 +160,10 @@ def employee_form(window):
    gender_combobox.grid(row=1,column=1)
    
    #Dob Label
-   Dob_label = Label(detail_frame,text='Date Of Birth :',font=('times new roman',12))
-   Dob_label.grid(row=1,column=2,padx=20,pady=10,sticky='w')
-   Dob_date_entry = DateEntry(detail_frame,width=18, font=('times new roman',12),state='readonly',date_pattern='dd/mm/yyyy')
-   Dob_date_entry.grid(row=1,column=3) 
+   dob_date_entry_label = Label(detail_frame,text='Date Of Birth :',font=('times new roman',12))
+   dob_date_entry_label.grid(row=1,column=2,padx=20,pady=10,sticky='w')
+   dob_date_entry = DateEntry(detail_frame,width=18, font=('times new roman',12),state='readonly',date_pattern='dd/mm/yyyy')
+   dob_date_entry.grid(row=1,column=3) 
    
    #Contact Label
    contact_label = Label(detail_frame,text='Contact :',font=('times new roman',12))
@@ -150,69 +172,74 @@ def employee_form(window):
    contact_entry.grid(row=1,column=5,padx=20,pady=10)
    
    #Employee Type
-   Emp_label = Label(detail_frame,text='Employee Type :',font=('times new roman',12))
-   Emp_label.grid(row=2,column=0,padx=20,pady=10,sticky='w')
-   Emp_combobox = ttk.Combobox(detail_frame,values=('Full Time','Part Time','Casual','Contract','Intern'),font=('times new roman',12),width=18,state='readonly')
-   Emp_combobox.set('Select Type')
-   Emp_combobox.grid(row=2,column=1)
+   employment_type_label = Label(detail_frame,text='Employee Type :',font=('times new roman',12))
+   employment_type_label.grid(row=2,column=0,padx=20,pady=10,sticky='w')
+   employment_type_combobox = ttk.Combobox(detail_frame,values=('Full Time','Part Time','Casual','Contract','Intern'),font=('times new roman',12),width=18,state='readonly')
+   employment_type_combobox.set('Select Type')
+   employment_type_combobox.grid(row=2,column=1)
    
    #Education
-   Education_label = Label(detail_frame,text='Education :',font=('times new roman',12))
-   Education_label.grid(row=2,column=2,padx=20,pady=10,sticky='w')
+   education_label = Label(detail_frame,text='Education :',font=('times new roman',12))
+   education_label.grid(row=2,column=2,padx=20,pady=10,sticky='w')
    
    education_option = ['B.Tech','M.Tech','B.Com','M.Com','Bsc','Msc','BBA','MBA','LLB','LLM','B.Arch','M.Arch']
    
-   Education_combobox = ttk.Combobox(detail_frame, values=education_option,font=('times new roman',12),width=18,state='readonly')
-   Education_combobox.set('Select Education')
-   Education_combobox.grid(row=2,column=3)
+   education_combobox = ttk.Combobox(detail_frame, values=education_option,font=('times new roman',12),width=18,state='readonly')
+   education_combobox.set('Select Education')
+   education_combobox.grid(row=2,column=3)
    
    
    #Work Shift
-   WorkShift_label = Label(detail_frame,text='Employee Type :',font=('times new roman',12))
-   WorkShift_label.grid(row=2,column=4,padx=20,pady=10,sticky='w')
-   WorkShift_combobox = ttk.Combobox(detail_frame,values=('Morning','Night'),font=('times new roman',12),width=18,state='readonly')
-   WorkShift_combobox.set('Select Shift')
-   WorkShift_combobox.grid(row=2,column=5)
+   work_shift_label = Label(detail_frame,text='Employee Type :',font=('times new roman',12))
+   work_shift_label.grid(row=2,column=4,padx=20,pady=10,sticky='w')
+   work_shift_combobox = ttk.Combobox(detail_frame,values=('Morning','Night'),font=('times new roman',12),width=18,state='readonly')
+   work_shift_combobox.set('Select Shift')
+   work_shift_combobox.grid(row=2,column=5)
    
    #Address Label
-   Address_label = Label(detail_frame,text='Address :',font=('times new roman',12))
-   Address_label.grid(row=3,column=0,padx=20,pady=10,sticky='w')
-   Address_text = Text(detail_frame,width=20,height=3,font=('times new roman',12),bg='light yellow')
-   Address_text.grid(row=3,column=1,rowspan=2)
+   address_label = Label(detail_frame,text='Address :',font=('times new roman',12))
+   address_label.grid(row=3,column=0,padx=20,pady=10,sticky='w')
+   address_text = Text(detail_frame,width=20,height=3,font=('times new roman',12),bg='light yellow')
+   address_text.grid(row=3,column=1,rowspan=2)
    
    #date of join
-   Doj_label = Label(detail_frame,text='Date Of Joining :',font=('times new roman',12))
-   Doj_label.grid(row=3,column=2,padx=20,pady=10,sticky='w')
-   Doj_date_entry = DateEntry(detail_frame,width=18, font=('times new roman',12),state='readonly',date_pattern='dd/mm/yyyy')
-   Doj_date_entry.grid(row=3,column=3)
+   doj_label = Label(detail_frame,text='Date Of Joining :',font=('times new roman',12))
+   doj_label.grid(row=3,column=2,padx=20,pady=10,sticky='w')
+   doj_date_entry = DateEntry(detail_frame,width=18, font=('times new roman',12),state='readonly',date_pattern='dd/mm/yyyy')
+   doj_date_entry.grid(row=3,column=3)
    
    #User Type Label
-   Education_label = Label(detail_frame,text='User Type :',font=('times new roman',12))
-   Education_label.grid(row=4,column=2,padx=20,pady=10,sticky='w')
+   usertype_label = Label(detail_frame,text='User Type :',font=('times new roman',12))
+   usertype_label.grid(row=4,column=2,padx=20,pady=10,sticky='w')
    
-   Education_option = ['Admin','Employee']
+   usertype_option = ['Admin','Employee']
    
-   Education_combobox = ttk.Combobox(detail_frame, values=Education_option,font=('times new roman',12),width=18,state='readonly')
-   Education_combobox.set('Select User Type')
-   Education_combobox.grid(row=4,column=3)
+   usertype_combobox = ttk.Combobox(detail_frame, values=usertype_option,font=('times new roman',12),width=18,state='readonly')
+   usertype_combobox.set('Select User Type')
+   usertype_combobox.grid(row=4,column=3)
    
    #salary Label
-   Salary_label = Label(detail_frame,text='Salary :',font=('times new roman',12))
-   Salary_label.grid(row=3,column=4,padx=20,pady=10,sticky='w')
-   Salary_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
-   Salary_entry.grid(row=3,column=5,padx=20,pady=10)
+   salary_label = Label(detail_frame,text='Salary :',font=('times new roman',12))
+   salary_label.grid(row=3,column=4,padx=20,pady=10,sticky='w')
+   salary_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
+   salary_entry.grid(row=3,column=5,padx=20,pady=10)
    
    #Password Label
-   Password_label = Label(detail_frame,text='Password :',font=('times new roman',12))
-   Password_label.grid(row=4,column=4,padx=20,pady=10,sticky='w')
-   Password_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
-   Password_entry.grid(row=4,column=5,padx=20,pady=10)
+   password_label = Label(detail_frame,text='Password :',font=('times new roman',12))
+   password_label.grid(row=4,column=4,padx=20,pady=10,sticky='w')
+   password_entry=Entry(detail_frame,font=('times new roman',12),bg='light yellow')
+   password_entry.grid(row=4,column=5,padx=20,pady=10)
    
    #Button Frame
    button_frame = Frame(emp_frame,bg='white')
    button_frame.place(x=230,y=530)
    
-   add_button = Button(button_frame,text='Add',font=('times new roman',12),width=10,cursor='hand2',fg='white',bg='#0f4d7d')
+   #Add button
+   add_button = Button(button_frame,text='Add',font=('times new roman',12),width=10,cursor='hand2',fg='white',bg='#0f4d7d',
+                       command= lambda : add_employee(empid_entry.get(),name_entry.get(),email_entry.get(),gender_combobox.get(),dob_date_entry.get(),
+                                            contact_entry.get(),employment_type_combobox.get(),education_combobox.get(),work_shift_combobox.get(),address_text.get(1.0,END),
+                                            doj_date_entry.get(),salary_entry.get(),usertype_combobox.get(),password_entry.get()))
+   
    add_button.grid(row=0,column=0,padx=20)
    
    #Remove button
