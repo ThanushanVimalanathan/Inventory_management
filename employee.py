@@ -126,28 +126,46 @@ def select_data(event,empid_entry,name_entry,email_entry,gender_combobox,dob_dat
     gender_combobox.set(row[3])
     dob_date_entry.set_date(row[4])
     contact_entry.insert(0,row[5])
-    employment_type_combobox.set(row[6])
-    education_combobox.set(row[7])
+    education_combobox.set(row[6])
+    employment_type_combobox.set(row[7])
     work_shift_combobox.set(row[8])
     address_text.insert(1.0,row[9])
     doj_date_entry.set_date(row[10])
     salary_entry.insert(0,row[11])
     usertype_combobox.set(row[12])
     password_entry.insert(0,row[13])
-    
-    
-
-
-
-
-
-
-
-
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------# 
 
+#------------------------------------Update Employee----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------# 
+def update_employee(empid, name, email, gender, dob, contact,education,employment_type, work_shift, address,doj, salary, usertype, password):
+    selected = employee_treeview.selection()
+    if not selected:
+        messagebox.showerror('Error','No row in selected')
+    
+    else:
+        cursor,connection = connect_database()
+        if not cursor or not connection:
+            return
+        
+        cursor.execute('USE inventory_system')
+        cursor.execute('SELECT * FROM employee_data WHERE empid=%s',(empid,))
+        current_data = cursor.fetchone()
+        current_data=current_data[1:]
+        print(current_data)
+        
+        cursor.execute('UPDATE employee_data SET name=%s,email=%s,gender=%s,dob=%s,contact=%s,education=%s,employment_type=%s,work_shift=%s,address=%s,doj=%s,salary=%s,usertype=%s,password=%s WHERE empid=%s',(name,email,gender,dob,contact,education,employment_type,work_shift,address,doj,salary,usertype,password,empid))
+        connection.commit()
+        treeview_data()
+        messagebox.showinfo('Success','Data is updated successfully')
+
+        
+    
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------# 
 
 def employee_form(window):
    global back_btn_img,employee_treeview
@@ -353,8 +371,12 @@ def employee_form(window):
    
    add_button.grid(row=0,column=0,padx=20)
    
-   #Remove button
-   Update_button = Button(button_frame,text='Update',font=('times new roman',12),width=10,cursor='hand2',fg='white',bg='#0f4d7d')
+   #Update button
+   Update_button = Button(button_frame,text='Update',font=('times new roman',12),width=10,cursor='hand2',fg='white',bg='#0f4d7d',command= lambda:update_employee(empid_entry.get(),name_entry.get(),email_entry.get(),gender_combobox.get(),dob_date_entry.get(),
+                                            contact_entry.get(),employment_type_combobox.get(),education_combobox.get(),work_shift_combobox.get(),address_text.get(1.0,END),
+                                            doj_date_entry.get(),salary_entry.get(),usertype_combobox.get(),password_entry.get()))
+
+
    Update_button.grid(row=0,column=1,padx=20)
    
    #Delete button
