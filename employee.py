@@ -15,13 +15,6 @@ def connect_database():
         messagebox.showerror('Error','Database connectivity error')
         return None,None
     
-    
-    cursor.execute('CREATE DATABASE IF NOT EXISTS inventory_system')
-    cursor.execute('USE inventory_system')
-    cursor.execute('CREATE TABLE IF NOT EXISTS employee_data (empid INT(30) PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), gender VARCHAR(50),'
-                   'dob VARCHAR(30),employment_type VARCHAR(50), contact VARCHAR(30) ,education varchar(50), work_shift VARCHAR(50), address VARCHAR(100), doj VARCHAR(30),'
-                   'salary VARCHAR(50), usertype VARCHAR(50), password VARCHAR(50))')
-    
     return cursor,connection
     
 connect_database()  
@@ -33,13 +26,21 @@ def treeview_data():
     cursor, connection = connect_database()
     if not cursor or not connection:
         return
+    cursor.execute('USE inventory_system')
+    try:
+       cursor.execute('SELECT * FROM employee_data')
+       employee_records = cursor.fetchall()
+       employee_treeview.delete(*employee_treeview.get_children())
     
-    cursor.execute('SELECT * FROM employee_data')
-    employee_records = cursor.fetchall()
-    employee_treeview.delete(*employee_treeview.get_children())
+       for record in employee_records:
+           employee_treeview.insert('',END,values=record)
     
-    for record in employee_records:
-        employee_treeview.insert('',END,values=record)
+    except Exception as e:
+        messagebox.showerror('Error',f'Error due to {e}')
+    
+    finally:
+        cursor.close()
+        connection.close()
         
         
 #--------------------------------------clear Function-----------------------------------------------------------------------        
@@ -74,17 +75,79 @@ def add_employee( empid,name,email,gender,dob,contact,education,employment_type,
         cursor,connection = connect_database() 
         if not cursor or not connection:
             return
-        cursor.execute("""INSERT INTO employee_data (empid, name, email, gender, dob, contact,education,employment_type, work_shift, address,doj, salary, usertype, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",(empid, name, email, gender, dob, contact,education,employment_type, work_shift, address,doj, salary, usertype, password))
-        connection.commit()
-        treeview_data()
-        messagebox.showinfo('Success','Data is Inserted successfully')
+        
+        cursor.execute('USE inventory_system')
+        
+        try:
+           cursor.execute('SELECT empid from employee_data WHERE empid=%s',(empid,))
+           if cursor.fetchone():
+               messagebox.showerror('Error','ID already exists')
+           cursor.execute("""INSERT INTO employee_data (empid, name, email, gender, dob, contact,education,employment_type, work_shift, address,doj, salary, usertype, password) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",(empid, name, email, gender, dob, contact,education,employment_type, work_shift, address,doj, salary, usertype, password))
+           connection.commit()
+           treeview_data()
+           messagebox.showinfo('Success','Data is Inserted successfully')
+        
+        except Exception as e:
+            messagebox.showerror('Error',f'Error due to {e}')
+            
+        finally:
+           cursor.close()
+           connection.close()
         
 
 
     
-#---------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------Database Creation-------------------------------------------------------#
+def create_database_table():
+    cursor,connection = connect_database()
+    cursor.execute('CREATE DATABASE IF NOT EXISTS inventory_system')
+    cursor.execute('USE inventory_system')
+    cursor.execute('CREATE TABLE IF NOT EXISTS employee_data (empid INT(30) PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), gender VARCHAR(50),'
+                   'dob VARCHAR(30),employment_type VARCHAR(50), contact VARCHAR(30) ,education varchar(50), work_shift VARCHAR(50), address VARCHAR(100), doj VARCHAR(30),'
+                   'salary VARCHAR(50), usertype VARCHAR(50), password VARCHAR(50))')
 
-   
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#   
+
+
+#--------------------------------------------------Select Data--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------# 
+def select_data(event,empid_entry,name_entry,email_entry,gender_combobox,dob_date_entry,
+                contact_entry,employment_type_combobox,education_combobox,work_shift_combobox,address_text,
+                doj_date_entry,salary_entry,usertype_combobox,password_entry):
+    
+    clear_fields(empid_entry,name_entry,email_entry,gender_combobox,dob_date_entry,contact_entry,employment_type_combobox,education_combobox,work_shift_combobox,address_text,doj_date_entry,salary_entry,usertype_combobox,password_entry)
+
+    index = employee_treeview.selection()
+    content = employee_treeview.item(index)
+    row = content['values']
+    
+    empid_entry.insert(0,row[0])
+    name_entry.insert(0,row[1])
+    email_entry.insert(0,row[2])
+    gender_combobox.set(row[3])
+    dob_date_entry.set_date(row[4])
+    contact_entry.insert(0,row[5])
+    employment_type_combobox.set(row[6])
+    education_combobox.set(row[7])
+    work_shift_combobox.set(row[8])
+    address_text.insert(1.0,row[9])
+    doj_date_entry.set_date(row[10])
+    salary_entry.insert(0,row[11])
+    usertype_combobox.set(row[12])
+    password_entry.insert(0,row[13])
+    
+    
+
+
+
+
+
+
+
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------# 
+
 
 def employee_form(window):
    global back_btn_img,employee_treeview
@@ -176,6 +239,7 @@ def employee_form(window):
    
    treeview_data()
    
+    
    
    detail_frame = Frame(emp_frame,bg='light gray')
    detail_frame.place(x=20,y=300)
@@ -209,7 +273,7 @@ def employee_form(window):
    #Dob Label
    dob_date_entry_label = Label(detail_frame,text='Date Of Birth :',font=('times new roman',12))
    dob_date_entry_label.grid(row=1,column=2,padx=20,pady=10,sticky='w')
-   dob_date_entry = DateEntry(detail_frame,width=18, font=('times new roman',12),state='readonly',date_pattern='dd/mm/yyyy')
+   dob_date_entry = DateEntry(detail_frame,width=18, font=('times new roman',12),date_pattern='dd/mm/yyyy')
    dob_date_entry.grid(row=1,column=3) 
    
    #Contact Label
@@ -252,7 +316,7 @@ def employee_form(window):
    #date of join
    doj_label = Label(detail_frame,text='Date Of Joining :',font=('times new roman',12))
    doj_label.grid(row=3,column=2,padx=20,pady=10,sticky='w')
-   doj_date_entry = DateEntry(detail_frame,width=18, font=('times new roman',12),state='readonly',date_pattern='dd/mm/yyyy')
+   doj_date_entry = DateEntry(detail_frame,width=18, font=('times new roman',12),date_pattern='dd/mm/yyyy')
    doj_date_entry.grid(row=3,column=3)
    
    #User Type Label
@@ -302,4 +366,8 @@ def employee_form(window):
                                                                                                                                                              contact_entry,employment_type_combobox,education_combobox,work_shift_combobox,address_text,
                                                                                                                                                              doj_date_entry,salary_entry,usertype_combobox,password_entry))
    Clear_button.grid(row=0,column=3,padx=20)
+   employee_treeview.bind('<ButtonRelease-1>',lambda event:select_data(event,empid_entry,name_entry,email_entry,gender_combobox,dob_date_entry,
+                                                          contact_entry,employment_type_combobox,education_combobox,work_shift_combobox,address_text,
+                                                          doj_date_entry,salary_entry,usertype_combobox,password_entry))
+   create_database_table()
    
